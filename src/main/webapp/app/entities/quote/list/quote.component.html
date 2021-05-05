@@ -1,0 +1,163 @@
+<div>
+  <h2>Quotes Finder</h2>
+
+  <form name="searchForm" role="form" novalidate (ngSubmit)="searchQuotes()">
+    <div class="form-group">
+      <label class="form-control-label" for="field_stock">Stock</label>
+      <select class="form-control" id="field_stock" name="stock" [ngModel]="selectedStock">
+        <option [ngValue]="stock" *ngFor="let stock of stocks">
+          {{ stock.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-control-label" for="field_startDate">Fecha inicio</label>
+      <div class="input-group">
+        <input id="field_startDate" data-cy="date" type="text" class="form-control" name="date" [ngModel]="startDate" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-control-label" for="field_endDate">Fecha fin</label>
+      <div class="input-group">
+        <input id="field_endDate" data-cy="date" type="text" class="form-control" name="date" [ngModel]="endDate" />
+      </div>
+    </div>
+
+    <button type="submit" id="save-entity" class="btn btn-primary">Buscar</button>
+  </form>
+
+  <div class="table-responsive" id="entities" *ngIf="stockQuotes && stockQuotes.length > 0">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Open</th>
+          <th>High</th>
+          <th>Low</th>
+          <th>Close</th>
+          <th>Adjclose</th>
+          <th>Volume</th>
+          <th>Stock</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let quote of stockQuotes">
+          <td>{{ quote.date | formatMediumDate }}</td>
+          <td>{{ quote.open }}</td>
+          <td>{{ quote.high }}</td>
+          <td>{{ quote.low }}</td>
+          <td>{{ quote.close }}</td>
+          <td>{{ quote.adjclose }}</td>
+          <td>{{ quote.volume }}</td>
+          <td>{{ quote.stock?.name }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="page-heading" data-cy="QuoteHeading">
+    <span jhiTranslate="stockApp.quote.home.title">Quotes</span>
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="stockApp.quote.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-quote"
+        [routerLink]="['/quote/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="stockApp.quote.home.createLabel"> Create a new Quote </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="quotes?.length === 0">
+    <span jhiTranslate="stockApp.quote.home.notFound">No quotes found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="quotes && quotes.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="date"><span jhiTranslate="stockApp.quote.date">Date</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="open"><span jhiTranslate="stockApp.quote.open">Open</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="high"><span jhiTranslate="stockApp.quote.high">High</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="low"><span jhiTranslate="stockApp.quote.low">Low</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="close"><span jhiTranslate="stockApp.quote.close">Close</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="adjclose">
+            <span jhiTranslate="stockApp.quote.adjclose">Adjclose</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="volume"><span jhiTranslate="stockApp.quote.volume">Volume</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="stock.name"><span jhiTranslate="stockApp.quote.stock">Stock</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let quote of quotes; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/quote', quote.id, 'view']">{{ quote.id }}</a>
+          </td>
+          <td>{{ quote.date | formatMediumDate }}</td>
+          <td>{{ quote.open }}</td>
+          <td>{{ quote.high }}</td>
+          <td>{{ quote.low }}</td>
+          <td>{{ quote.close }}</td>
+          <td>{{ quote.adjclose }}</td>
+          <td>{{ quote.volume }}</td>
+          <td>
+            <div *ngIf="quote.stock">
+              <a [routerLink]="['/stock', quote.stock?.id, 'view']">{{ quote.stock?.name }}</a>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button type="submit" [routerLink]="['/quote', quote.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button type="submit" [routerLink]="['/quote', quote.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(quote)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="quotes && quotes.length > 0">
+    <div class="row justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="quote">
+      <h2 data-cy="quoteDetailsHeading"><span jhiTranslate="stockApp.quote.detail.title">Quote</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ quote.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="stockApp.quote.date">Date</span></dt>
+        <dd>
+          <span>{{ quote.date | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="stockApp.quote.open">Open</span></dt>
+        <dd>
+          <span>{{ quote.open }}</span>
+        </dd>
+        <dt><span jhiTranslate="stockApp.quote.high">High</span></dt>
+        <dd>
+          <span>{{ quote.high }}</span>
+        </dd>
+        <dt><span jhiTranslate="stockApp.quote.low">Low</span></dt>
+        <dd>
+          <span>{{ quote.low }}</span>
+        </dd>
+        <dt><span jhiTranslate="stockApp.quote.close">Close</span></dt>
+        <dd>
+          <span>{{ quote.close }}</span>
+        </dd>
+        <dt><span jhiTranslate="stockApp.quote.adjclose">Adjclose</span></dt>
+        <dd>
+          <span>{{ quote.adjclose }}</span>
+        </dd>
+        <dt><span jhiTranslate="stockApp.quote.volume">Volume</span></dt>
+        <dd>
+          <span>{{ quote.volume }}</span>
+        </dd>
+        <dt><span jhiTranslate="stockApp.quote.stock">Stock</span></dt>
+        <dd>
+          <div *ngIf="quote.stock">
+            <a [routerLink]="['/stock', quote.stock?.id, 'view']">{{ quote.stock?.name }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/quote', quote.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

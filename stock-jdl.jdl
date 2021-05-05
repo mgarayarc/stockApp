@@ -1,0 +1,30 @@
+
+entity Stock {
+	symbol String required,
+    name String required
+}
+
+entity Quote {
+    date LocalDate required,
+    open BigDecimal,
+    high BigDecimal,
+    low BigDecimal,
+    close BigDecimal required,
+    adjclose BigDecimal required,
+    volume Long
+}
+
+relationship ManyToOne {
+	Quote{stock(name)} to Stock
+}
+
+paginate Stock, Quote with pagination
+
+// Use Data Transfer Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+// service all with serviceImpl except Employee, Job
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

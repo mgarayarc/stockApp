@@ -41,6 +41,8 @@
     "jwtSecretKey": "NWQ1NjcwOTA5ZjYyZmJhMDFmZjkxNzQ0NGZhNzJiNjExMDk2YjI0YzY1YmJjY2Y2YTk0NTE1NmU1OTUwZDgzMDk2ZDg2ZjAyOGYwZDE0YjBmNThiNDcxZTAyZWIwMWMzYWEwZTgwNDI3ODcxYzQ0YjY4OWZiMDU4ZDEyZDNmYmE=",
     "clientPackageManager": "npm",
     "clientThemeVariant": "",
-    "languages": ["en", "es"]
+    "languages": ["en", "es"],
+    "entities": ["Stock", "Quote"],
+    "lastLiquibaseTimestamp": 1620095160000
   }
 }

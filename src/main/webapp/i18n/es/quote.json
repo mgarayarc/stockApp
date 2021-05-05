@@ -1,0 +1,31 @@
+{
+  "stockApp": {
+    "quote": {
+      "home": {
+        "title": "Quotes",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Quote",
+        "createOrEditLabel": "Crear o editar Quote",
+        "notFound": "Ningún Quotes encontrado"
+      },
+      "created": "Un nuevo Quote ha sido creado con el identificador {{ param }}",
+      "updated": "Un Quote ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Quote ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Quote {{ id }}?"
+      },
+      "detail": {
+        "title": "Quote"
+      },
+      "id": "ID",
+      "date": "Date",
+      "open": "Open",
+      "high": "High",
+      "low": "Low",
+      "close": "Close",
+      "adjclose": "Adjclose",
+      "volume": "Volume",
+      "stock": "Stock"
+    }
+  }
+}

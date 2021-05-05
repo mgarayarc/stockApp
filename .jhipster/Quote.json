@@ -1,0 +1,55 @@
+{
+  "name": "Quote",
+  "fields": [
+    {
+      "fieldName": "date",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "open",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "high",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "low",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "close",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "adjclose",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "volume",
+      "fieldType": "Long"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "stock",
+      "otherEntityRelationshipName": "quote",
+      "relationshipName": "stock",
+      "otherEntityField": "name"
+    }
+  ],
+  "entityTableName": "quote",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210504022600"
+}
